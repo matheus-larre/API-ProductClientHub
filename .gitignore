@@ -270,6 +270,8 @@ ServiceFabricBackup/
 *.db
 *.db-shm
 *.db-wal
+*.sqlite
+*.sqlite3
 
 # Business Intelligence projects
 *.rdl.data
