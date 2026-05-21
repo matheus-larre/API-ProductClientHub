@@ -3,7 +3,7 @@ using ProductClientHub.API.Infrastructure;
 using ProductClientHub.Communication.Responses;
 using ProductClientHub.Exceptions.ExceptionsBase;
 
-namespace ProductClientHub.API.UseCases.Clients.GeyById;
+namespace ProductClientHub.API.UseCases.Clients.GetById;
 public class GetClientByIdUseCase
 {
     private readonly ProductClientHubDbContext _dbContext;

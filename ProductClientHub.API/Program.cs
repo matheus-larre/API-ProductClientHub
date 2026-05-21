@@ -3,7 +3,7 @@ using ProductClientHub.API.Filters;
 using ProductClientHub.API.Infrastructure;
 using ProductClientHub.API.UseCases.Clients.Delete;
 using ProductClientHub.API.UseCases.Clients.GetAll;
-using ProductClientHub.API.UseCases.Clients.GeyById;
+using ProductClientHub.API.UseCases.Clients.GetById;
 using ProductClientHub.API.UseCases.Clients.Register;
 using ProductClientHub.API.UseCases.Clients.Update;
 using ProductClientHub.API.UseCases.Products.Delete;
