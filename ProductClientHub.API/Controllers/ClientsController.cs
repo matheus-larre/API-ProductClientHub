@@ -59,9 +59,9 @@ public class ClientsController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(ResponseAllClientsJson), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult GetAll()
+    public IActionResult GetAll([FromQuery] int pageNumber = 1)
     {
-        var response = _getAllUseCase.Execute();
+        var response = _getAllUseCase.Execute(pageNumber);
 
         if (response.Clients.Count == 0)
             return NoContent();
