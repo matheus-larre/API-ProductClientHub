@@ -11,6 +11,7 @@
 > API RESTful desenvolvida em **C# com .NET 10 e Entity Framework Core**,
 > para gerenciamento de clientes e produtos com relacionamento entre entidades, segurança JWT e arquitetura profissional.
 
+
 ## 📋 Sobre o Projeto
 
 O **ProductClientHub** é uma solução robusta para o cadastro e gerenciamento de **clientes** e seus respectivos **produtos**. O projeto segue princípios de **Clean Code**, **SOLID** e utiliza uma arquitetura em camadas para garantir escalabilidade e facilidade de manutenção.
