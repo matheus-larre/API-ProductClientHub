@@ -8,21 +8,25 @@ using ProductClientHub.Exceptions.ExceptionsBase;
 namespace ProductClientHub.API.UseCases.Clients.Update;
 public class UpdateClientUseCase
 {
+    private readonly ProductClientHubDbContext _dbContext;
+    public UpdateClientUseCase(ProductClientHubDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public void Execute(Guid cliendId, RequestClientJson request)
     {
         Validate(request);
 
-        var dbContext = new ProductClientHubDbContext();
-
-        var entity = dbContext.Clients.FirstOrDefault(client => client.Id == cliendId);
-        if(entity == null)
+        var entity = _dbContext.Clients.FirstOrDefault(client => client.Id == cliendId);
+        if (entity == null)
             throw new NotFoundException("Cliente não encontrado.");
 
         entity.Name = request.Name;
         entity.Email = request.Email;
 
-        dbContext.Clients.Update(entity);
-        dbContext.SaveChanges();
+        _dbContext.Clients.Update(entity);
+        _dbContext.SaveChanges();
     }
 
     private void Validate(RequestClientJson request)

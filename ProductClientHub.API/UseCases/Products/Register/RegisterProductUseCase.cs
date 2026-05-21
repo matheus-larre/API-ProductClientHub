@@ -9,11 +9,15 @@ namespace ProductClientHub.API.UseCases.Products.Register;
 
 public class RegisterProductUseCase
 {
+    private readonly ProductClientHubDbContext _dbContext;
+    public RegisterProductUseCase(ProductClientHubDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public ResponseShortProductJson Execute(Guid cliendId, RequestProductJson request)
     {
-        var dbContext = new ProductClientHubDbContext();
-
-        Validate(dbContext, cliendId, request);
+        Validate(cliendId, request);
 
         var entity = new Product
         {
@@ -23,9 +27,9 @@ public class RegisterProductUseCase
             ClientId = cliendId,
         };
 
-        dbContext.Products.Add(entity);
+        _dbContext.Products.Add(entity);
 
-        dbContext.SaveChanges();
+        _dbContext.SaveChanges();
 
         return new ResponseShortProductJson
         {
@@ -34,9 +38,9 @@ public class RegisterProductUseCase
         };
     }
 
-    private void Validate(ProductClientHubDbContext dbContext, Guid cliendId, RequestProductJson request)
+    private void Validate(Guid cliendId, RequestProductJson request)
     {
-        var clientExist = dbContext.Clients.Any(client => client.Id == cliendId);
+        var clientExist = _dbContext.Clients.Any(client => client.Id == cliendId);
         if (clientExist == false)
             throw new NotFoundException("Cliente não existe.");
 

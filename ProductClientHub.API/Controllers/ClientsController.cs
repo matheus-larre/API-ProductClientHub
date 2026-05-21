@@ -13,14 +13,32 @@ namespace ProductClientHub.API.Controllers;
 [ApiController]
 public class ClientsController : ControllerBase
 {
+    private readonly RegisterClientUseCase _registerUseCase;
+    private readonly UpdateClientUseCase _updateUseCase;
+    private readonly GetAllClientsUseCase _getAllUseCase;
+    private readonly GetClientByIdUseCase _getByIdUseCase;
+    private readonly DeleteClientUseCase _deleteUseCase;
+
+    public ClientsController(
+        RegisterClientUseCase registerUseCase,
+        UpdateClientUseCase updateUseCase,
+        GetAllClientsUseCase getAllUseCase,
+        GetClientByIdUseCase getByIdUseCase,
+        DeleteClientUseCase deleteUseCase)
+    {
+        _registerUseCase = registerUseCase;
+        _updateUseCase = updateUseCase;
+        _getAllUseCase = getAllUseCase;
+        _getByIdUseCase = getByIdUseCase;
+        _deleteUseCase = deleteUseCase;
+    }
+
     [HttpPost]
     [ProducesResponseType(typeof(ResponseShortClientJson), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResponseErrorMessagesJson), StatusCodes.Status400BadRequest)]
     public IActionResult Register([FromBody] RequestClientJson request)
     {
-        var useCase = new RegisterClientUseCase();
-
-        var response = useCase.Execute(request);
+        var response = _registerUseCase.Execute(request);
 
         return Created(string.Empty, response);
     }
@@ -33,9 +51,7 @@ public class ClientsController : ControllerBase
 
     public IActionResult Update([FromRoute] Guid id, [FromBody] RequestClientJson request)
     {
-        var useCase = new UpdateClientUseCase();
-
-        useCase.Execute(id, request);
+        _updateUseCase.Execute(id, request);
 
         return NoContent();
     }
@@ -45,11 +61,9 @@ public class ClientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public IActionResult GetAll()
     {
-        var useCase = new GetAllClientsUseCase();
+        var response = _getAllUseCase.Execute();
 
-        var response = useCase.Execute();
-
-        if(response.Clients.Count == 0)
+        if (response.Clients.Count == 0)
             return NoContent();
 
         return Ok(response);
@@ -61,11 +75,9 @@ public class ClientsController : ControllerBase
     [ProducesResponseType(typeof(ResponseErrorMessagesJson), StatusCodes.Status404NotFound)]
     public IActionResult GetById([FromRoute] Guid id)
     {
-        var useCase = new GetClientByIdUseCase();
+        var response = _getByIdUseCase.Execute(id);
 
-        useCase.Execute(id);
-
-        return Ok();
+        return Ok(response);
     }
 
     [HttpDelete]
@@ -74,9 +86,7 @@ public class ClientsController : ControllerBase
     [ProducesResponseType(typeof(ResponseErrorMessagesJson), StatusCodes.Status404NotFound)]
     public IActionResult Delete([FromRoute] Guid id)
     {
-        var useCase = new DeleteClientUseCase();
-
-        useCase.Execute(id);
+        _deleteUseCase.Execute(id);
 
         return NoContent();
     }

@@ -6,11 +6,15 @@ using ProductClientHub.Exceptions.ExceptionsBase;
 namespace ProductClientHub.API.UseCases.Clients.GeyById;
 public class GetClientByIdUseCase
 {
+    private readonly ProductClientHubDbContext _dbContext;
+    public GetClientByIdUseCase(ProductClientHubDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public ResponseClientJson Execute(Guid id)
     {
-        var dbContext = new ProductClientHubDbContext();
-
-        var entity = dbContext.Clients.Include(client => client.Products).FirstOrDefault(client => client.Id == id);
+        var entity = _dbContext.Clients.Include(client => client.Products).FirstOrDefault(client => client.Id == id);
         if (entity == null)
             throw new NotFoundException("Cliente não encontrado.");
 

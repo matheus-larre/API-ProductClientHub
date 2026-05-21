@@ -4,11 +4,15 @@ using ProductClientHub.Communication.Responses;
 namespace ProductClientHub.API.UseCases.Clients.GetAll;
 public class GetAllClientsUseCase
 {
+    private readonly ProductClientHubDbContext _dbContext;
+    public GetAllClientsUseCase(ProductClientHubDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public ResponseAllClientsJson Execute()
     {
-        var dbContext = new ProductClientHubDbContext();
-
-        var clients = dbContext.Clients.ToList();
+        var clients = _dbContext.Clients.ToList();
 
         return new ResponseAllClientsJson
         {

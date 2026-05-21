@@ -8,11 +8,15 @@ using ProductClientHub.Exceptions.ExceptionsBase;
 namespace ProductClientHub.API.UseCases.Clients.Register;
 public class RegisterClientUseCase
 {
+    private readonly ProductClientHubDbContext _dbContext;
+    public RegisterClientUseCase(ProductClientHubDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public ResponseShortClientJson Execute(RequestClientJson request)
     {
         Validate(request);
-
-        var dbContext = new ProductClientHubDbContext();
 
         var entity = new Client
         {
@@ -20,9 +24,9 @@ public class RegisterClientUseCase
             Email = request.Email
         };
 
-        dbContext.Clients.Add(entity);
+        _dbContext.Clients.Add(entity);
 
-        dbContext.SaveChanges();
+        _dbContext.SaveChanges();
 
         return new ResponseShortClientJson
         {
