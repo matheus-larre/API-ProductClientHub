@@ -8,6 +8,10 @@ using ProductClientHub.API.UseCases.Clients.Register;
 using ProductClientHub.API.UseCases.Clients.Update;
 using ProductClientHub.API.UseCases.Products.Delete;
 using ProductClientHub.API.UseCases.Products.Register;
+using ProductClientHub.API.UseCases.Clients.SharedValidator;
+using ProductClientHub.API.UseCases.Products.SharedValidator;
+using FluentValidation;
+using ProductClientHub.Communication.Requests;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +29,11 @@ builder.Services.AddDbContext<ProductClientHubDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// Validators
+builder.Services.AddScoped<IValidator<RequestClientJson>, RequestClientValidator>();
+builder.Services.AddScoped<IValidator<RequestProductJson>, RequestProductValidator>();
+
+// Use Cases
 builder.Services.AddScoped<RegisterClientUseCase>();
 builder.Services.AddScoped<UpdateClientUseCase>();
 builder.Services.AddScoped<GetAllClientsUseCase>();

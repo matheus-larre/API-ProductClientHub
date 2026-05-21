@@ -1,4 +1,5 @@
-﻿using ProductClientHub.API.Entities;
+using FluentValidation;
+using ProductClientHub.API.Entities;
 using ProductClientHub.API.Infrastructure;
 using ProductClientHub.API.UseCases.Products.SharedValidator;
 using ProductClientHub.Communication.Requests;
@@ -10,9 +11,11 @@ namespace ProductClientHub.API.UseCases.Products.Register;
 public class RegisterProductUseCase
 {
     private readonly ProductClientHubDbContext _dbContext;
-    public RegisterProductUseCase(ProductClientHubDbContext dbContext)
+    private readonly IValidator<RequestProductJson> _validator;
+    public RegisterProductUseCase(ProductClientHubDbContext dbContext, IValidator<RequestProductJson> validator)
     {
         _dbContext = dbContext;
+        _validator = validator;
     }
 
     public ResponseShortProductJson Execute(Guid cliendId, RequestProductJson request)
@@ -44,9 +47,7 @@ public class RegisterProductUseCase
         if (clientExist == false)
             throw new NotFoundException("Cliente não existe.");
 
-        var validator = new RequestProductValidator();
-
-        var result = validator.Validate(request);
+        var result = _validator.Validate(request);
 
         if (result.IsValid == false)
         {

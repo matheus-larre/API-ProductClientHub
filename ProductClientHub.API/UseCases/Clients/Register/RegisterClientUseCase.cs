@@ -1,4 +1,5 @@
-﻿using ProductClientHub.API.Entities;
+﻿using FluentValidation;
+using ProductClientHub.API.Entities;
 using ProductClientHub.API.Infrastructure;
 using ProductClientHub.API.UseCases.Clients.SharedValidator;
 using ProductClientHub.Communication.Requests;
@@ -9,9 +10,11 @@ namespace ProductClientHub.API.UseCases.Clients.Register;
 public class RegisterClientUseCase
 {
     private readonly ProductClientHubDbContext _dbContext;
-    public RegisterClientUseCase(ProductClientHubDbContext dbContext)
+    private readonly IValidator<RequestClientJson> _validator;
+    public RegisterClientUseCase(ProductClientHubDbContext dbContext, IValidator<RequestClientJson> validator)
     {
         _dbContext = dbContext;
+        _validator = validator;
     }
 
     public ResponseShortClientJson Execute(RequestClientJson request)
@@ -36,9 +39,7 @@ public class RegisterClientUseCase
     }
     private void Validate(RequestClientJson request)
     {
-        var validator = new RequestClientValidator();
-
-        var result = validator.Validate(request);
+        var result = _validator.Validate(request);
 
         if (result.IsValid == false)
         {

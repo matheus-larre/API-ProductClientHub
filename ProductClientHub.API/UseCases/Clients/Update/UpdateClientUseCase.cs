@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using FluentValidation;
+using Microsoft.AspNetCore.Authentication;
 using ProductClientHub.API.Infrastructure;
 using ProductClientHub.API.UseCases.Clients.Register;
 using ProductClientHub.API.UseCases.Clients.SharedValidator;
@@ -9,9 +10,11 @@ namespace ProductClientHub.API.UseCases.Clients.Update;
 public class UpdateClientUseCase
 {
     private readonly ProductClientHubDbContext _dbContext;
-    public UpdateClientUseCase(ProductClientHubDbContext dbContext)
+    private readonly IValidator<RequestClientJson> _validator;
+    public UpdateClientUseCase(ProductClientHubDbContext dbContext, IValidator<RequestClientJson> validator)
     {
         _dbContext = dbContext;
+        _validator = validator;
     }
 
     public void Execute(Guid cliendId, RequestClientJson request)
@@ -31,9 +34,7 @@ public class UpdateClientUseCase
 
     private void Validate(RequestClientJson request)
     {
-        var validator = new RequestClientValidator();
-
-        var result = validator.Validate(request);
+        var result = _validator.Validate(request);
 
         if (result.IsValid == false)
         {
@@ -44,4 +45,3 @@ public class UpdateClientUseCase
 
     }
 }
-
