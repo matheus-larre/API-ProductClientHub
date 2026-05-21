@@ -1,86 +1,66 @@
 # 🛒 ProductClientHub API
 
-> API RESTful desenvolvida em **C# com .NET e Entity Framework Core**, para gerenciamento de clientes e produtos com relacionamento entre entidades.
+> API RESTful desenvolvida em **C# com .NET 10 e Entity Framework Core**, para gerenciamento de clientes e produtos com relacionamento entre entidades, segurança JWT e arquitetura profissional.
+
+---
+
+![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)
+![Entity Framework Core](https://img.shields.io/badge/EF%20Core-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=jsonwebtokens&logoColor=000000)
+![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)
+![xUnit](https://img.shields.io/badge/xUnit-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 
 ---
 
 ## 📋 Sobre o Projeto
 
-O **ProductClientHub** é uma API de cadastro e gerenciamento de **clientes** e **produtos**, onde cada produto pertence a um cliente. O projeto foi construído com arquitetura em camadas, separando responsabilidades entre API, comunicação (DTOs) e exceções customizadas.
+O **ProductClientHub** é uma solução robusta para o cadastro e gerenciamento de **clientes** e seus respectivos **produtos**. O projeto segue princípios de **Clean Code**, **SOLID** e utiliza uma arquitetura em camadas para garantir escalabilidade e facilidade de manutenção.
+
+### 🌟 Diferenciais desta Versão
+- **Segurança:** Autenticação via JWT com hash de senhas (BCrypt).
+- **Escalabilidade:** Paginação implementada nos endpoints de listagem.
+- **Confiabilidade:** Base de testes unitários com xUnit, Moq e FluentAssertions.
+- **Profissionalismo:** Gerenciamento de banco de dados via EF Core Migrations.
 
 ---
 
 ## 🏗️ Arquitetura
 
-O projeto é dividido em 3 camadas:
+O projeto é dividido em camadas bem definidas:
 
 ```
 ProductClientHub/
-├── ProductClientHub.API/           ← Camada principal: controllers, DbContext, entidades
-├── ProductClientHub.Communication/ ← DTOs de Request e Response
-└── ProductClientHub.Exceptions/    ← Exceções customizadas da aplicação
+├── ProductClientHub.API/           ← Camada principal: Controllers, Use Cases, Infra e Entidades
+├── ProductClientHub.Communication/ ← Contratos (DTOs) de Entrada (Requests) e Saída (Responses)
+├── ProductClientHub.Exceptions/    ← Gerenciamento centralizado de exceções de negócio
+└── ProductClientHub.Tests/         ← Testes unitários de Use Cases
 ```
-
-**Por que essa separação?**
-- **API** — responsável por receber requisições HTTP e retornar respostas
-- **Communication** — define os contratos de entrada/saída (evita expor entidades diretamente)
-- **Exceptions** — centraliza os erros de negócio da aplicação
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias e Bibliotecas
 
 | Tecnologia | Finalidade |
 |---|---|
-| C# 12+ | Linguagem principal |
-| .NET 8+ | Framework da aplicação |
-| ASP.NET Core | Framework web / API |
-| Entity Framework Core | ORM para acesso ao banco |
-| SQLite | Banco de dados local (arquivo `.db`) |
-| Swagger / Swashbuckle | Documentação e teste dos endpoints |
-
----
-
-## 🗃️ Modelo de Dados
-
-```
-Client (1) ──────── (N) Product
-```
-
-### Client
-| Campo | Tipo | Descrição |
-|---|---|---|
-| Id | Guid | Identificador único (PK) |
-| Name | string | Nome do cliente |
-| Email | string | E-mail do cliente |
-| Products | List\<Product\> | Produtos vinculados ao cliente |
-
-### Product
-| Campo | Tipo | Descrição |
-|---|---|---|
-| Id | Guid | Identificador único (PK) |
-| Name | string | Nome do produto |
-| Brand | string | Marca do produto |
-| Price | decimal | Preço |
-| ClientId | Guid | Chave estrangeira para Client (FK) |
-
-> Ambas as entidades herdam de `EntityBase`, que fornece o campo `Id` (Guid).
+| **.NET 10** | Runtime e Framework base |
+| **EF Core 10** | Mapeamento Objeto-Relacional (ORM) |
+| **JWT Bearer** | Autenticação e Autorização segura |
+| **BCrypt.Net** | Hashing seguro de senhas |
+| **FluentValidation** | Validações de domínio fluídas e injetáveis |
+| **Bogus** | Geração de dados aleatórios para testes |
+| **Moq** | Criação de objetos simulados para testes unitários |
+| **SQLite** | Banco de dados leve e relacional |
 
 ---
 
 ## 🚀 Como Rodar Localmente
 
 ### Pré-requisitos
-
-Antes de começar, certifique-se de ter instalado:
-
-- [.NET SDK 8+](https://dotnet.microsoft.com/download) — verifique com `dotnet --version`
+- [.NET SDK 10+](https://dotnet.microsoft.com/download)
 - [Git](https://git-scm.com/)
-- Um editor: [Visual Studio 2022](https://visualstudio.microsoft.com/) ou [VS Code](https://code.visualstudio.com/)
 
----
-
-### Via Terminal
+### Passo a Passo
 
 **1. Clone o repositório**
 ```bash
@@ -88,111 +68,50 @@ git clone https://github.com/matheus-larre/API-ProductClientHub.git
 cd API-ProductClientHub
 ```
 
-**2. Acesse a pasta da API**
-```bash
-cd ProductClientHub.API
-```
-
-**3. Restaure as dependências**
+**2. Restaure as dependências**
 ```bash
 dotnet restore
 ```
 
+**3. Configure o Banco de Dados (Migrations)**
+```bash
+dotnet ef database update --project ProductClientHub.API
+```
+
 **4. Execute o projeto**
 ```bash
-dotnet run
+dotnet run --project ProductClientHub.API
 ```
-
-O banco de dados SQLite será criado automaticamente na primeira execução.
 
 **5. Acesse o Swagger**
-
-Após subir o servidor, abra no navegador:
-```
-https://localhost:{porta}/swagger
-```
-
-> A porta exata é exibida no terminal após rodar `dotnet run`. Normalmente `5000`, `5001` ou `7000`.
+Abra no navegador: `https://localhost:{porta}/swagger`
 
 ---
 
-### Via Visual Studio 2022
+## 🧪 Como Rodar os Testes
 
-1. Abra o arquivo `ProductClientHub.slnx`
-2. Clique com botão direito em `ProductClientHub.API` → **Set as Startup Project**
-3. Pressione `F5` ou clique em **Run**
-4. O Swagger abrirá automaticamente no navegador
-
----
-
-## 📡 Endpoints
-
-### Clients
-
-| Método | Rota | Descrição |
-|---|---|---|
-| `GET` | `/api/clients` | Lista todos os clientes |
-| `GET` | `/api/clients/{id}` | Busca cliente por ID |
-| `POST` | `/api/clients` | Cadastra novo cliente |
-| `PUT` | `/api/clients/{id}` | Atualiza cliente |
-| `DELETE` | `/api/clients/{id}` | Remove cliente |
-
-### Products
-
-| Método | Rota | Descrição |
-|---|---|---|
-| `GET` | `/api/products` | Lista todos os produtos |
-| `GET` | `/api/products/{id}` | Busca produto por ID |
-| `POST` | `/api/products` | Cadastra novo produto |
-| `PUT` | `/api/products/{id}` | Atualiza produto |
-| `DELETE` | `/api/products/{id}` | Remove produto |
-
-> Todos os endpoints podem ser testados diretamente pelo **Swagger UI**.
-
----
-
-## 📁 Estrutura de Pastas
-
-```
-ProductClientHub/
-│
-├── ProductClientHub.API/
-│   ├── Controllers/
-│   │   ├── ClientsController.cs
-│   │   └── ProductsController.cs
-│   ├── Entities/
-│   │   ├── EntityBase.cs
-│   │   ├── Client.cs
-│   │   └── Product.cs
-│   ├── Infrastructure/
-│   │   └── ProductClientHubDbContext.cs
-│   ├── appsettings.json
-│   └── Program.cs
-│
-├── ProductClientHub.Communication/
-│   ├── Requests/
-│   └── Responses/
-│
-└── ProductClientHub.Exceptions/
+Para garantir que tudo está funcionando corretamente:
+```bash
+dotnet test
 ```
 
 ---
 
-## ⚠️ Observações Importantes
+## 📡 Endpoints Principais
 
-- **Banco de dados:** o arquivo `.db` do SQLite é gerado automaticamente na primeira execução via `EnsureCreated()`. Não é necessária nenhuma configuração manual.
-- **Sem autenticação:** a API está completamente aberta — sem JWT ou proteção de rotas.
-- **Sem migrations:** mudanças nas entidades exigem deletar o arquivo `.db` e reiniciar o projeto para recriar o schema.
+### Auth
+- `POST /api/Login` - Autentica usuário e retorna o Token JWT.
 
----
+### Clients (Requer Token)
+- `GET /api/clients?pageNumber=1` - Lista clientes com paginação.
+- `GET /api/clients/{id}` - Detalhes de um cliente específico.
+- `POST /api/clients` - Cadastra novo cliente.
+- `PUT /api/clients/{id}` - Atualiza dados do cliente.
+- `DELETE /api/clients/{id}` - Remove um cliente.
 
-## 🔭 Possíveis Evoluções
-
-- [ ] Adicionar autenticação com JWT
-- [ ] Migrar para Migrations do EF Core
-- [ ] Adicionar validações com FluentValidation
-- [ ] Implementar paginação nas listagens
-- [ ] Adicionar testes unitários com xUnit
+### Products (Requer Token)
+- `POST /api/products` - Vincula um produto a um cliente.
+- `DELETE /api/products/{id}` - Remove um produto.
 
 ---
 
@@ -200,4 +119,5 @@ ProductClientHub/
 
 Desenvolvido por **Matheus Larré**
 
-[![GitHub](https://img.shields.io/badge/GitHub-matheus--larre-181717?style=flat&logo=github)](https://github.com/matheus-larre)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/matheus-larre)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/matheus-larre/)
