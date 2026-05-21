@@ -8,7 +8,8 @@
 ![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)
 ![xUnit](https://img.shields.io/badge/xUnit-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 
- API RESTful desenvolvida em **C# com .NET 10 e Entity Framework Core**, para gerenciamento de clientes e produtos com relacionamento entre entidades, segurança JWT e arquitetura profissional.
+> API RESTful desenvolvida em **C# com .NET 10 e Entity Framework Core**,
+> para gerenciamento de clientes e produtos com relacionamento entre entidades, segurança JWT e arquitetura profissional.
 
 ## 📋 Sobre o Projeto
 
