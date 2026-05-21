@@ -1,7 +1,5 @@
 # 🛒 ProductClientHub API
 
-> API RESTful desenvolvida em **C# com .NET 10 e Entity Framework Core**, para gerenciamento de clientes e produtos com relacionamento entre entidades, segurança JWT e arquitetura profissional.
-
 ---
 
 ![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
