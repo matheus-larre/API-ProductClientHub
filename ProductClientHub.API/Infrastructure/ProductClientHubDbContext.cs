@@ -8,5 +8,6 @@ namespace ProductClientHub.API.Infrastructure;
 
     public DbSet<Client> Clients { get; set; } = default!;
     public DbSet<Product> Products { get; set; } = default!;
+    public DbSet<User> Users { get; set; } = default!;
 }
 
