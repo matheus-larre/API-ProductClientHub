@@ -368,3 +368,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Windows image folder caching
+desktop.ini
+Thumbs.db
